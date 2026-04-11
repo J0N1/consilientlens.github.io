@@ -1,0 +1,53 @@
+---
+layout: default
+---
+
+<div class="home">
+  {{ content }}
+
+  {%- if site.posts.size > 0 -%}
+    {%- assign postsByYear = site.posts | group_by_exp: "post", "post.date | date: '%Y'" -%}
+    {%- for year in postsByYear -%}
+      <h2 class="post-year">{{ year.name }}</h2>
+
+      {%- assign postsByMonth = year.items | group_by_exp: "post", "post.date | date: '%B'" -%}
+      {%- for month in postsByMonth -%}
+        <h3 class="post-month">{{ month.name }}</h3>
+        <ul class="post-list">
+          {%- for post in month.items -%}
+          <li data-tags="{{ post.tags | join: ',' }}">
+            <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+          </li>
+          {%- endfor -%}
+        </ul>
+      {%- endfor -%}
+    {%- endfor -%}
+  {%- endif -%}
+</div>
+
+<script>
+  var postItems = document.querySelectorAll('.post-list li[data-tags]');
+  if (postItems.length > 0) {
+    document.querySelectorAll('.sidebar-tags .tag-pill').forEach(function(pill) {
+      pill.addEventListener('click', function(e) {
+        e.preventDefault();
+        var tag = this.dataset.tag;
+        var active = this.classList.contains('tag-active');
+
+        document.querySelectorAll('.sidebar-tags .tag-pill').forEach(function(p) {
+          p.classList.remove('tag-active');
+        });
+
+        if (active) {
+          postItems.forEach(function(li) { li.style.display = ''; });
+        } else {
+          this.classList.add('tag-active');
+          postItems.forEach(function(li) {
+            var tags = li.dataset.tags ? li.dataset.tags.split(',') : [];
+            li.style.display = tags.indexOf(tag) !== -1 ? '' : 'none';
+          });
+        }
+      });
+    });
+  }
+</script>

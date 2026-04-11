@@ -1,0 +1,11 @@
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <h4 class="sidebar-heading">Tags</h4>
+    {%- assign all_tags = site.posts | map: "tags" | flatten | uniq | sort -%}
+    <div class="sidebar-tags">
+      {%- for tag in all_tags -%}
+        <a href="{{ "/tags/" | relative_url }}#{{ tag | slugify }}" class="tag-pill" data-tag="{{ tag }}">{{ tag }}</a>
+      {%- endfor -%}
+    </div>
+  </div>
+</aside>
