@@ -3,6 +3,9 @@ layout: post
 title: "Digital Reflections: Hallucinations"
 date: 2025-10-22
 categories: [AI, Reflections]
+author: nitin
+series: "Digital Reflections"
+part: 4
 tags: [llm, hallucination, cognitive-bias, epistemology, digital-reflections]
 ---
 

@@ -9,6 +9,13 @@ layout: default
       <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
         {{ page.date | date: "%b %-d, %Y" }}
       </time>
+      {%- if page.author -%}
+        {%- assign author = site.data.authors[page.author] -%}
+        {%- if author -%}
+          &nbsp;·&nbsp;
+          <a href="{{ "/" | append: page.author | append: "/" | relative_url }}" class="post-author-link" style="color: {{ author.accent }}">{{ author.name }}</a>
+        {%- endif -%}
+      {%- endif -%}
     </p>
   </header>
 

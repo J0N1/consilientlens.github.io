@@ -3,6 +3,9 @@ layout: post
 title: "Digital Reflections: The Pause"
 date: 2025-10-30
 categories: [AI, Reflections]
+author: nitin
+series: "Digital Reflections"
+part: 5
 tags: [llm, listening, patience, communication, digital-reflections]
 ---
 

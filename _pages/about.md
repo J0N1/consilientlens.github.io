@@ -4,72 +4,45 @@ title: About
 permalink: /about/
 ---
 
-# ConsilientLens
+# Consilient Lens
 
-Consilient Lens is a place for writing at the intersection of ideas.
+Some ideas don't stay within their boundaries.
 
-*Consilience* — the unity of knowledge across disciplines.  
-This is an attempt to practice that.
+A question in one field starts showing up somewhere else. A system problem turns out to be a human one. Something small keeps repeating, just under different names.
 
----
-
-Some ideas don’t stay within their boundaries.
-
-A question in one area starts showing up somewhere else.  
-A system problem begins to look like a human one.  
-Something small keeps repeating, just under different names.
-
-This space is for those overlaps.
+This is a space for those overlaps — written by two people from different vantage points, noticing the same patterns.
 
 ---
 
-## Why this exists
+## The idea behind it
 
-I kept noticing the same patterns in different places.
+*Consilience* — the unity of knowledge across disciplines.
 
-A problem at work would show up in a completely different form elsewhere.  
-A decision that looked technical would turn out to be behavioral.  
-Something small would keep repeating, just under different names.
+Most explanations stop at the surface. The real ones require looking sideways — borrowing a frame from somewhere else, connecting what wasn't obviously connected.
 
-It wasn’t obvious at first.
-
-But once you start seeing it, it’s hard to unsee.
-
-This is a place to slow that down a bit—  
-to look at those patterns more carefully,  
-and try to understand what’s actually going on underneath.
-
-Most of the time, the surface explanation isn’t the real one.
+That's what we try to do here.
 
 ---
 
-## What you’ll find here
+## What you'll find
 
-This is not a blog about one topic.
+Notes across:
+- systems and decisions
+- technology and behavior
+- work, learning, and everyday patterns
 
-It’s a set of notes across:
-- systems and decisions  
-- technology and behavior  
-- work, learning, and everyday patterns  
+Sometimes technical. Sometimes reflective. Usually somewhere in between.
 
-Sometimes technical.  
-Sometimes reflective.  
-Usually somewhere in between.
-
-No fixed conclusions.  
-Just things I’m trying to understand better.
+No fixed conclusions — just things we're trying to understand better.
 
 ---
 
-## About me
+## Who writes here
 
-I work in technology, mostly around systems that sit close to decision-making.
+**[Nitin](/nitin/)** — works in technology, close to decision-making systems. Writes about the patterns that keep showing up across different contexts.  
 
-But this isn’t about that.
-
-This is where I step back a bit—  
-and try to make sense of how things connect.
+**[Prisha](/prisha/)** — add a line here about what Prisha brings to this.
 
 ---
 
-*If something here feels familiar, you’ve probably noticed the same patterns.*
+*If something here feels familiar, you've probably noticed the same patterns.*

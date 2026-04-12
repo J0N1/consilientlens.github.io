@@ -17,6 +17,12 @@ layout: default
           {%- for post in month.items -%}
           <li data-tags="{{ post.tags | join: ',' }}">
             <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+            {%- if post.author -%}
+              {%- assign author = site.data.authors[post.author] -%}
+              {%- if author -%}
+                <a href="{{ "/" | append: post.author | append: "/" | relative_url }}" class="post-author-label" style="color: {{ author.accent }}">{{ author.name }}</a>
+              {%- endif -%}
+            {%- endif -%}
           </li>
           {%- endfor -%}
         </ul>

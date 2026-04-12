@@ -1,0 +1,619 @@
+---
+layout: post
+title: "Orchestration Is the Easy Part"
+date: 2026-04-11
+categories: [AI, Agent Orchestration ]
+author: nitin
+series: "Orchestration Is the Easy Part"
+part: 1
+tags: [product design, AI teams, curriculum design, agent architecture]
+---
+
+<style>
+
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap');
+
+
+
+  .post-content {
+
+    --ink:        #1a1814;
+
+    --ink-mid:    #4a4540;
+
+    --ink-light:  #7a746e;
+
+    --paper:      #faf8f4;
+
+    --paper-warm: #f2ede4;
+
+    --rule:       #e0d8cc;
+
+    --terra:      #b85c38;
+
+    --terra-light:#f0ded5;
+
+    --gold:       #c4923a;
+
+    --gold-light: #f5ead8;
+
+    --code-bg:    #f0ede8;
+
+    font-family: 'Source Serif 4', Georgia, serif;
+
+    font-weight: 300;
+
+    line-height: 1.85;
+
+    color: var(--ink);
+
+  }
+
+
+
+  .post-content .deck {
+
+    font-size: 1rem;
+
+    color: var(--ink-mid);
+
+    font-style: italic;
+
+    margin: 0 0 1.5rem;
+
+    line-height: 1.75;
+
+  }
+
+
+
+  .post-content .byline {
+
+    font-size: 0.75rem;
+
+    letter-spacing: 0.1em;
+
+    text-transform: uppercase;
+
+    color: var(--ink-light);
+
+  }
+
+
+
+  .post-content p { margin-bottom: 1.4rem; }
+
+
+
+  .post-content h2 {
+
+    font-family: 'Playfair Display', Georgia, serif;
+
+    font-size: 1.5rem;
+
+    font-weight: 400;
+
+    font-style: italic;
+
+    color: var(--ink);
+
+    margin: 3.5rem 0 1rem;
+
+    padding-top: 1.2rem;
+
+    border-top: 1px solid var(--rule);
+
+  }
+
+
+
+  .post-content h3 {
+
+    font-size: 0.7rem;
+
+    font-weight: 400;
+
+    letter-spacing: 0.16em;
+
+    text-transform: uppercase;
+
+    color: var(--terra);
+
+    margin: 2.2rem 0 0.6rem;
+
+  }
+
+
+
+  .post-content blockquote {
+
+    border-left: 3px solid var(--terra);
+
+    margin: 2.5rem 0;
+
+    padding: 0.2rem 0 0.2rem 1.5rem;
+
+    font-style: italic;
+
+    font-size: 1.1rem;
+
+    color: var(--ink-mid);
+
+    line-height: 1.75;
+
+  }
+
+
+
+  .post-content blockquote cite {
+
+    display: block;
+
+    font-style: normal;
+
+    font-size: 0.75rem;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+
+    color: var(--ink-light);
+
+    margin-top: 0.6rem;
+
+  }
+
+
+
+  .post-content .callout {
+
+    background: var(--gold-light);
+
+    border-left: 3px solid var(--gold);
+
+    padding: 1.1rem 1.4rem;
+
+    margin: 2rem 0;
+
+    border-radius: 0 4px 4px 0;
+
+  }
+
+
+
+  .post-content .callout-label {
+
+    font-size: 0.66rem;
+
+    font-weight: 400;
+
+    letter-spacing: 0.16em;
+
+    text-transform: uppercase;
+
+    color: var(--gold);
+
+    margin-bottom: 0.5rem;
+
+  }
+
+
+
+  .post-content .callout p { margin-bottom: 0; font-size: 0.9rem; color: var(--ink-mid); }
+
+
+
+  .post-content pre {
+
+    background: var(--code-bg);
+
+    border: 1px solid var(--rule);
+
+    border-radius: 4px;
+
+    padding: 1.1rem 1.4rem;
+
+    overflow-x: auto;
+
+    margin: 1.5rem 0;
+
+    font-size: 0.76rem;
+
+    line-height: 1.65;
+
+  }
+
+
+
+  .post-content code {
+
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+    font-size: 0.8rem;
+
+    background: var(--code-bg);
+
+    padding: 0.1em 0.35em;
+
+    border-radius: 3px;
+
+    color: var(--terra);
+
+  }
+
+
+
+  .post-content pre code { background: none; padding: 0; color: var(--ink-mid); }
+
+
+
+  .post-content .agent-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+    gap: 1rem;
+
+    margin: 2rem 0;
+
+  }
+
+
+
+  .post-content .agent-card {
+
+    background: var(--paper-warm);
+
+    border: 1px solid var(--rule);
+
+    border-radius: 6px;
+
+    padding: 1rem 1.1rem;
+
+  }
+
+
+
+  .post-content .agent-card.future { opacity: 0.5; border-style: dashed; }
+
+
+
+  .post-content .agent-name {
+
+    font-family: 'Playfair Display', serif;
+
+    font-size: 1rem;
+
+    font-weight: 600;
+
+    color: var(--ink);
+
+    margin-bottom: 0.2rem;
+
+  }
+
+
+
+  .post-content .agent-role {
+
+    font-size: 0.68rem;
+
+    letter-spacing: 0.1em;
+
+    text-transform: uppercase;
+
+    color: var(--terra);
+
+    margin-bottom: 0.5rem;
+
+  }
+
+
+
+  .post-content .agent-card.future .agent-role { color: var(--ink-light); }
+
+
+
+  .post-content .agent-owns {
+
+    font-size: 0.8rem;
+
+    color: var(--ink-mid);
+
+    line-height: 1.55;
+
+  }
+
+
+
+  .post-content .agent-output {
+
+    background: var(--code-bg);
+
+    border: 1px solid var(--rule);
+
+    border-left: 3px solid var(--ink-light);
+
+    border-radius: 0 4px 4px 0;
+
+    padding: 1.1rem 1.4rem;
+
+    margin: 1.5rem 0;
+
+    font-size: 0.88rem;
+
+    color: var(--ink-mid);
+
+    line-height: 1.7;
+
+  }
+
+
+
+  .post-content .agent-output p { margin-bottom: 0.8rem; }
+
+  .post-content .agent-output p:last-child { margin-bottom: 0; }
+
+
+
+  .post-content .agent-output-label {
+
+    font-size: 0.66rem;
+
+    letter-spacing: 0.16em;
+
+    text-transform: uppercase;
+
+    color: var(--ink-light);
+
+    margin-bottom: 0.8rem;
+
+  }
+
+
+
+  .post-content .pipeline {
+
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    margin: 2rem 0;
+
+    gap: 0;
+
+  }
+
+
+
+  .post-content .pipeline-step {
+
+    background: var(--terra-light);
+
+    border: 1px solid var(--terra);
+
+    border-radius: 4px;
+
+    padding: 0.4rem 0.8rem;
+
+    font-size: 0.78rem;
+
+    color: var(--terra);
+
+    white-space: nowrap;
+
+    margin: 0.2rem 0;
+
+  }
+
+
+
+  .post-content .pipeline-arrow {
+
+    color: var(--ink-light);
+
+    padding: 0 0.4rem;
+
+    font-size: 0.85rem;
+
+  }
+
+
+
+  .post-content .scene-break {
+
+    text-align: center;
+
+    margin: 3.5rem 0 2.5rem;
+
+    position: relative;
+
+  }
+
+
+
+  .post-content .scene-break::before {
+
+    content: '';
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 0; right: 0;
+
+    height: 1px;
+
+    background: var(--rule);
+
+  }
+
+
+
+  .post-content .scene-label {
+
+    position: relative;
+
+    display: inline-block;
+
+    background: white;
+
+    padding: 0 1.2rem;
+
+    font-size: 0.68rem;
+
+    letter-spacing: 0.2em;
+
+    text-transform: uppercase;
+
+    color: var(--ink-light);
+
+    font-style: italic;
+
+  }
+
+
+
+  .post-content .footnote {
+
+    margin-top: 5rem;
+
+    padding-top: 2rem;
+
+    border-top: 1px solid var(--rule);
+
+    font-size: 0.8rem;
+
+    color: var(--ink-light);
+
+    line-height: 1.7;
+
+  }
+
+</style>
+
+
+
+<article>
+
+
+
+  <p class="deck">Designing an AI product team for a real app</p>
+
+  <p class="byline">A builder's journal &mdash; Part 1</p>
+
+
+
+
+
+  <div class="scene-break"><span class="scene-label">Part 1 &mdash; The problem</span></div>
+
+
+
+  <h2>A Feedback Gap Passing as a Talent Gap</h2>
+
+
+
+  <p>Most people learning to paint quit within the first three months. Not because they lack talent; because they lack feedback. They watch a tutorial, do the exercise, then something goes wrong and the video cannot explain why. So they end up thinking they are just not the kind of person who can do it.</p>
+
+
+
+  <p>In-person classes can close that loop, but only if you can afford them and rearrange your week around a Thursday-morning slot. Between a teacher you cannot hire and a video that cannot answer, there is nothing. This app exists to fill that missing loop.</p>
+
+
+
+  <blockquote>
+
+    Personalized feedback on your work is what YouTube cannot provide and what human teachers charge eighty dollars an hour for.
+
+    <cite>&mdash; The original product brief</cite>
+
+  </blockquote>
+
+
+
+  <p>The proposition: a mobile app teaching drawing and oil painting through AI feedback on photos of the student's actual work. Not a video library, not a course platform &mdash; an app built around real feedback on real student work. Squint is that engine. Its name comes from the first real technique beginners learn: squinting at your subject to see value masses rather than detail, stripping away everything the brain fills in by habit.</p>
+
+
+
+
+
+  <div class="scene-break"><span class="scene-label">The proof</span></div>
+
+
+
+  <h2>Two critics, one sphere</h2>
+
+
+
+  <p>Before any code, the first question was whether AI feedback could hold up against expert feedback on the same drawing. I sketched the sphere following one of the Squint lessons, then showed it to my wife, a practicing artist (<a href="https://www.instagram.com/manishasrijastudio/" target="_blank">@manishasrijastudio</a>). She looked at it first and said, "There's no cast shadow, so it floats instead of sitting. The shadow side needs to be pushed darker. The highlight is overworked &mdash; leave that as bare paper."</p>
+
+
+
+  <p>The same sphere went to Claude Vision. It returned this:</p>
+
+
+
+  <div class="agent-output">
+
+    <div class="agent-output-label">AI feedback &mdash; Sphere attempt 1</div>
+
+    <p>Your light source placement shows good instincts. The core issue is value compression: your darkest dark and lightest light are too close together, which flattens the form. Push the shadow side darker, particularly the core shadow band where the surface turns away from the light.</p>
+
+    <p>The cast shadow is absent. Without it the sphere appears to float. Add a shadow on the ground plane, darkest at the base and fading outward.</p>
+
+    <p>The highlight has been shaded over. Leave it as bare paper &mdash; that white is your brightest value.</p>
+
+    <em>Readiness: value range 65% &mdash; placement 70% &mdash; gradation 50% &mdash; 3D form 60%</em>
+
+  </div>
+
+
+
+  <p>Same observations. Different words. Ten minutes later, a second sphere with the cast shadow added, the shadow side darker, the highlight untouched. Scores averaged 71%. Measurably better from one round of feedback, whether that feedback came from a person or a prompt.</p>
+
+
+
+  <div class="callout">
+
+    <p class="callout-label">The rule that followed</p>
+
+    <p>Validate the loop before writing a single route. Run the test with five real people. If four out of five say the feedback was useful, build the app.</p>
+
+  </div>
+
+
+
+
+
+  <div class="scene-break"><span class="scene-label">The curriculum</span></div>
+
+
+
+  <h2>Pencil before paint</h2>
+
+
+
+  <p>A feedback engine needs something to evaluate. We needed a curriculum &mdash; one that taught people to see before they picked up a brush.</p>
+
+
+
+  <p>The original brief assumed oil paint from day one. That changed quickly: why put a student through a $150 supply list before they know whether they enjoy drawing? Pencil first. Twelve dollars, zero setup, zero drying time. Learn to see. Then paint.</p>
+
+
+
+  <p>That single decision cascaded into 62 lessons across 13 modules and three phases, integrating Barbara Oakley's spaced repetition framework and Betty Edwards' perceptual drawing exercises. A squinting technique &mdash; literally squinting at your subject to see value masses rather than detail &mdash; became the app's name. A tip system with unique IDs (T2.04, T3.01) let the AI reference specific rules in its feedback, building a closed loop between instruction and correction.</p>
+
+
+
+  <p>No single prompt can hold eight thousand words of curriculum coherently. Which is how we arrived at agents.</p>
+
+
+
+  <p><em>Continue with Part 2 for the design question and technical build.</em></p>
+
+</article>
+

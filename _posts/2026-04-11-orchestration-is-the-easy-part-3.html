@@ -1,0 +1,323 @@
+---
+layout: post
+title: "What Building With AI Assistants Actually Looks Like"
+date: 2026-04-11
+categories: [AI, Agent Orchestration]
+series: "Orchestration Is the Easy Part"
+part: 3
+tags: [product design, AI teams, claude code, deployment, developer experience]
+author: nitin
+---
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap');
+
+  .post-content {
+    --ink:        #1a1814;
+    --ink-mid:    #4a4540;
+    --ink-light:  #7a746e;
+    --paper:      #faf8f4;
+    --paper-warm: #f2ede4;
+    --rule:       #e0d8cc;
+    --terra:      #b85c38;
+    --terra-light:#f0ded5;
+    --gold:       #c4923a;
+    --gold-light: #f5ead8;
+    --code-bg:    #f0ede8;
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .post-content .deck {
+    font-size: 1rem;
+    color: var(--ink-mid);
+    font-style: italic;
+    margin: 0 0 1.5rem;
+    line-height: 1.75;
+  }
+
+  .post-content .byline {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+
+  .post-content p { margin-bottom: 1.4rem; }
+
+  .post-content h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink);
+    margin: 3.5rem 0 1rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .post-content h3 {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin: 2.2rem 0 0.6rem;
+  }
+
+  .post-content blockquote {
+    border-left: 3px solid var(--terra);
+    margin: 2.5rem 0;
+    padding: 0.2rem 0 0.2rem 1.5rem;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ink-mid);
+    line-height: 1.75;
+  }
+
+  .post-content blockquote cite {
+    display: block;
+    font-style: normal;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-top: 0.6rem;
+  }
+
+  .post-content pre {
+    background: var(--code-bg);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 1.1rem 1.4rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    font-size: 0.76rem;
+    line-height: 1.65;
+  }
+
+  .post-content code {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    font-size: 0.8rem;
+    background: var(--code-bg);
+    padding: 0.1em 0.35em;
+    border-radius: 3px;
+    color: var(--terra);
+  }
+
+  .post-content pre code { background: none; padding: 0; color: var(--ink-mid); }
+
+  .post-content .error-block {
+    background: #fdf0ee;
+    border: 1px solid #e8c4bb;
+    border-left: 3px solid var(--terra);
+    border-radius: 0 4px 4px 0;
+    padding: 1.1rem 1.4rem;
+    margin: 1.5rem 0;
+    font-size: 0.76rem;
+    line-height: 1.65;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    color: var(--ink-mid);
+    overflow-x: auto;
+  }
+
+  .post-content .error-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--terra);
+    margin-bottom: 0.6rem;
+  }
+
+  .post-content .scene-break {
+    text-align: center;
+    margin: 3.5rem 0 2.5rem;
+    position: relative;
+  }
+
+  .post-content .scene-break::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .post-content .scene-label {
+    position: relative;
+    display: inline-block;
+    background: white;
+    padding: 0 1.2rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    font-style: italic;
+  }
+
+  .post-content .footnote {
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    line-height: 1.7;
+  }
+</style>
+
+<article>
+
+  <p class="deck">Eight sessions, two evenings, one message that said &ldquo;give me one option&rdquo;</p>
+  <p class="byline">A builder's journal &mdash; Part 3</p>
+
+  <div class="scene-break"><span class="scene-label">The transition</span></div>
+
+  <h2>The browser can think. It cannot build.</h2>
+
+  <p>The agent system from Parts 1 and 2 existed as documents and outputs. Mira had designed the curriculum. Kai had designed the screens. Every decision landed in <code>/outputs/</code> as a markdown file. Acting on any of it meant opening a different tool, making changes, running a command, and hoping the two stayed consistent.</p>
+
+  <p>Claude Code is the same model in a terminal with filesystem access. Same prompts. It could actually write the files. What followed was not a clean pipeline.</p>
+
+  <div class="scene-break"><span class="scene-label">Windows</span></div>
+
+  <h2>Windows cp1252 broke the same script three times</h2>
+
+  <p>The first error arrived within minutes of the watcher script running. A Unicode character in an agent's output — an arrow, an emoji in a print statement — hit Windows' default <code>cp1252</code> encoding and the whole process crashed.</p>
+
+  <div class="error-block">
+    <div class="error-label">Session 1 — first crash</div>
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2705'
+in position 341: character maps to &lt;undefined&gt;
+  </div>
+
+  <p>The fix was straightforward: force UTF-8 at the top of the script. What was less straightforward was that the same error appeared again in a different file, then again in a third. Each fix was correct but local. The root cause — Windows defaulting to <code>cp1252</code> in terminal sessions, while the Anthropic API returns responses with Unicode throughout — was systemic. It took four separate incidents across three files before the permanent fix landed: UTF-8 reconfiguration at the top of every Python entry point, <code>encoding="utf-8"</code> on every <code>write_text</code> call, no exceptions.</p>
+
+  <p>A <code>.bat</code> file was created to load the <code>.env</code> API key automatically before any Python invocation — another fix for another variant of the same underlying problem: terminal sessions on Windows do not carry environment state the way Unix shells do. Every time a new terminal opened, the key was gone. The bat file made it permanent.</p>
+
+  <div class="scene-break"><span class="scene-label">The invisible character</span></div>
+
+  <h2>One invisible character. One hour lost. Thirty seconds to fix.</h2>
+
+  <p>Session 2. The relevant line was at the bottom of a long traceback:</p>
+
+  <div class="error-block">
+    <div class="error-label">Session 2 — httpx traceback, final line</div>
+httpcore.LocalProtocolError: Illegal header value
+b'sk-ant-api03-...ZJQAA '
+  </div>
+
+  <p>The space at the end of the key — one invisible character appended when the key was copied into the <code>.env</code> file — was enough to make every API call fail with a protocol error buried four levels deep in the httpx transport layer. The error message gave no indication of what was wrong. The traceback pointed at the HTTP library, not at the configuration file. Finding it required reading the raw header value and noticing the trailing whitespace.</p>
+
+  <p>Open <code>.env</code>, delete the space, save. Thirty seconds. The error pointed everywhere except at the actual problem.</p>
+
+  <div class="scene-break"><span class="scene-label">The version problem</span></div>
+
+  <h2>Confident, fast, and four major versions behind</h2>
+
+  <p>When asked to scaffold the MVP, Claude Code chose Angular 17. Not because of any constraint or deliberate reasoning — it was simply the version current in its training data. It wrote 28 files confidently, ran a syntax check, confirmed everything was clean, and delivered a scaffold a full four major versions behind the current release.</p>
+
+  <p>The session that followed is worth quoting directly:</p>
+
+  <blockquote>
+    "Why Angular 17? Honest answer: it was the stable version I defaulted to, not a carefully considered choice. Angular 17 introduced standalone components as the default, which keeps the code simpler. But if you're starting fresh today, Angular 19 is current and there's no strong reason to pin to 17."
+    <cite>&mdash; Claude Code, when asked</cite>
+  </blockquote>
+
+  <p>By that point the latest version was actually 21.2.x. Claude Code acknowledged this when told, looked it up, and updated the package versions. The scaffold it had written was compatible — the standalone component API had not changed significantly — but the exchange illustrated something worth naming: Claude Code is fast, thorough, and confident. It is also operating from a training cutoff. Any dependency, framework version, or API that moved after that cutoff will be handled incorrectly until you catch it.</p>
+
+  <div class="scene-break"><span class="scene-label">The cost question</span></div>
+
+  <h2>Ollama free, Gemini untested, Claude in production</h2>
+
+  <p>Calling a production AI API on every photo upload during development is expensive. Not catastrophically so, but enough that you hesitate before every test run — which is the wrong state of mind when you are trying to iterate quickly on an evaluation prompt.</p>
+
+  <p>The solution was Ollama: an open-source tool that runs language models locally. During development, the backend pointed at a local Ollama instance. The API calls were free, the latency was manageable, and the prompt iteration loop was frictionless. The switch to a real API — Claude or Gemini — happened only when the prompt was stable enough to warrant it.</p>
+
+  <p>The switching layer is a single environment variable:</p>
+
+  <pre>AI_PROVIDER=ollama   # local dev — free, fast iteration
+AI_PROVIDER=gemini   # testing — evaluating response quality
+AI_PROVIDER=claude   # production — best results, higher cost</pre>
+
+  <p>The Gemini evaluation did not go smoothly. In one session, <code>gemini-2.0-flash</code> was deprecated mid-testing. The replacement <code>gemini-2.5-flash-preview-04-17</code> returned a 404. The session ended on <code>gemini-2.5-flash</code> after a web search confirmed it was the current stable model — something Claude Code's training data could not have known.</p>
+
+  <p>The model comparison is still running. The question is not which model is more capable in the abstract but which one gives feedback that a beginner finds useful and accurate — a question that only real student submissions can answer. Claude and Gemini are both in the running. Ollama handles the development loop regardless of which one wins.</p>
+
+  <div class="scene-break"><span class="scene-label">The gap between planning and code</span></div>
+
+  <h2>Agents read documents. They do not read your codebase.</h2>
+
+  <p>The app had been called Squint for weeks. The context documents said Squint. The agent system prompts said Squint. The curriculum said Squint. Late in the build sessions, a search of the source files turned up BrushCoach throughout — in component titles, in service class names, in comments, in the master system prompt passed to the vision API.</p>
+
+  <p>One command found them all. Another replaced them. Four files updated, done in seconds. But the episode illustrated something the agent design had not accounted for: agents read documents. They do not read source files. The gap between what the planning layer knows and what the codebase contains is real, and it grows silently every time a decision is made in a chat that is not immediately reflected in the code.</p>
+
+  <div class="scene-break"><span class="scene-label">The frustration</span></div>
+
+  <h2>We are wasting time just getting started</h2>
+
+  <p>Session 1, third environment error in a row:</p>
+
+  <blockquote>
+    "can we have this sorted we are wasting time just getting started"
+    <cite>&mdash; Session 1, after the fourth incident</cite>
+  </blockquote>
+
+  <p>This is the honest version of building with AI assistants. The architecture sessions in the browser had been clean — a question asked, an answer given, a decision made. The build sessions were different. Each error was fixable. None of them were interesting. They were the friction of moving from a designed system to a running one, and that friction does not disappear because an AI is helping you.</p>
+
+  <p>What Claude Code did well: it found the root cause of the encoding problem correctly, proposed the bat file approach without being asked, caught the missing import in the watcher script before the next run, and updated every affected file rather than just the one currently breaking. What it could not do: notice that fixing one file left three others still broken. That required a human to see the pattern.</p>
+
+  <p>The sessions took roughly two evenings to produce a running local build. Without Claude Code, the same work would likely have taken four or five. The time saving is real. The experience of those two evenings is not a clean pipeline — it is debugging, retrying, asking why again, and occasionally sending a message you would not send to a colleague but feel fine sending to a terminal.</p>
+
+  <div class="scene-break"><span class="scene-label">Context drift</span></div>
+
+  <h2>Claude Code built a second backend nobody asked for</h2>
+
+  <p>Session 3 asked Claude Code to implement the full Phase 1 curriculum and wire up the backend. It did both. It also created a brand new Node.js Express backend at <code>/backend/</code> on port 3000 &mdash; while a Python FastAPI backend already existed at <code>/mvp/backend/</code> on port 8000, fully functional, with its own bat files, its own venv, and its own routes.</p>
+
+  <p>Nobody asked for it. Claude Code did not check whether one already existed.</p>
+
+  <p>The video seed data went into the Node backend nobody was querying. The video player showed &ldquo;coming soon&rdquo; for every lesson. Two sessions to untangle. Both backends still coexist. The Python one serves the app. The Node one sits there.</p>
+
+  <p>Context drift. The model knows what it built in this session. It does not audit what was already there.</p>
+
+  <div class="scene-break"><span class="scene-label">Security</span></div>
+
+  <h2>The API key was exposed twice in eight sessions</h2>
+
+  <p>The API key was exposed twice. First: the trailing-space traceback printed it in full and it was pasted into the chat. Second: <code>.env.example</code> contained a real key, was committed, and pushed to GitHub. Claude Code caught it on a file check and flagged it.</p>
+
+  <p>Same pattern both times: a key left <code>.env</code>, touched a file that was not gitignored, and went public. The gap between what a file is supposed to contain and what it actually contains.</p>
+
+  <p>A pre-commit hook scanning for key patterns would have caught both. It does not exist in this project yet.</p>
+
+  <div class="scene-break"><span class="scene-label">Working with AI assistants</span></div>
+
+  <h2>AI assistants hedge. Senior engineers commit.</h2>
+
+  <p>After several rounds of Option A / Option B / Option C, the message was:</p>
+
+  <blockquote>
+    &ldquo;give one option please&rdquo;
+    <cite>&mdash; Session 6, mobile testing</cite>
+  </blockquote>
+
+  <p>A senior engineer who is not sure picks one option, tries it, adjusts. An AI assistant presents all options and defers. That looks thorough. It transfers the cognitive load back to the person who already needed help.</p>
+
+  <div class="scene-break"><span class="scene-label">What comes next</span></div>
+
+  <h2>Five users, no shared WiFi, no localhost</h2>
+
+  <p>The sessions described here produced a running local build. The next problem was getting it somewhere five people who are not on the same WiFi could reach it. That means a real deployment &mdash; a backend that stays running when the laptop closes, a frontend that loads without knowing the laptop&rsquo;s IP address, and API keys that live in an environment the code cannot accidentally commit.</p>
+
+  <p>Part four covers that: Railway&rsquo;s free tier paused the week it was needed, the venv in the first commit, the PORT variable uvicorn did not pick up, and the moment the API finally returned <code>{"status":"ok"}</code> from a URL that was not localhost.</p>
+
+  <p>The design work in Parts 1 and 2 did not ship anything. The sessions did. Slower and messier than the architecture implies, faster and more capable than building alone. That is where AI-assisted development is right now: not a clean pipeline, not a replacement for knowing what you are doing, but a real compression of the distance between a decision and a running build.</p>
+
+</article>
+
+<div class="footnote">
+  <p>Claude Code session history exported from VS Code: eight sessions across nine days, April 3–11 2026. Stack: Angular 21 PWA &mdash; FastAPI backend &mdash; Ollama (local) / Claude Sonnet / Gemini 2.5 Flash (evaluation) &mdash; Vercel (frontend) &mdash; Railway (backend). The agent system, curriculum, and all session exports are in the project repository.</p>
+</div>

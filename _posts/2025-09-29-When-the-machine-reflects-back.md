@@ -3,6 +3,9 @@ layout: post
 title: "When the Machine Reflects Back"
 date: 2025-09-29
 categories: [AI, Reflections]
+author: nitin
+series: "Digital Reflections"
+part: 1
 tags: [llm, anthropomorphism, human-nature, digital-reflections]
 ---
 

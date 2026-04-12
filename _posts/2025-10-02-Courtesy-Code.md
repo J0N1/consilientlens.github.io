@@ -3,6 +3,9 @@ layout: post
 title: "Digital Reflections: The Courtesy Code"
 date: 2025-10-02
 categories: [AI, Reflections]
+author: nitin
+series: "Digital Reflections"
+part: 2
 tags: [llm, politeness, human-behavior, prompt-engineering, digital-reflections]
 ---
 

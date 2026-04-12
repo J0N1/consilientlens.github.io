@@ -12,11 +12,14 @@ $base-font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Rob
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #424242 !important;
+  color: #1a1a1a !important;
   text-decoration: none !important;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 
-  &:visited { color: #424242 !important; }
-  &:hover { color: #111 !important; }
+  &:visited { color: #1a1a1a !important; }
+  &:hover { color: #000 !important; }
 }
 
 .site-logo {
@@ -64,6 +67,172 @@ $base-font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Rob
   }
 }
 
+
+// Landing page
+.landing {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.landing-tagline {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2.5rem;
+  line-height: 1.7;
+}
+
+.author-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+
+  @media (max-width: 680px) {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.author-column-header {
+  padding-top: 1rem;
+  margin-bottom: 1.5rem;
+  border-top-width: 5px !important;
+}
+
+.author-column-name {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  a { text-decoration: none; color: inherit; &:hover { text-decoration: underline; } }
+}
+
+.author-column-bio {
+  font-size: 0.95rem;
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.author-column-about {
+  font-size: 0.88rem;
+  color: #666;
+  line-height: 1.75;
+  margin-bottom: 0.75rem;
+}
+
+.author-column-posts-heading {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #999;
+  margin-bottom: 0.75rem;
+}
+
+.author-see-all {
+  font-size: 0.85rem;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 0.5rem;
+  &:hover { text-decoration: underline; }
+}
+
+// Series grouping
+.series-group {
+  margin-bottom: 2.5rem;
+}
+
+.series-title {
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.post-part {
+  font-size: 0.72rem;
+  color: #aaa;
+  margin-right: 8px;
+  font-variant-numeric: tabular-nums;
+  min-width: 16px;
+  display: inline-block;
+}
+
+// Author homepage
+.author-hero {
+  padding-left: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.author-hero-name {
+  font-size: 1.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.author-hero-bio {
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
+}
+
+.author-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #a0a0a0;
+  text-decoration: none;
+  &:hover { color: #0077b5; }
+}
+
+.author-divider {
+  margin: 1.5rem 0 2rem;
+}
+
+.no-posts {
+  color: #999;
+  font-style: italic;
+}
+
+.post-author-label {
+  font-size: 0.75rem;
+  margin-left: 8px;
+  text-decoration: none;
+  opacity: 0.85;
+  &:hover { opacity: 1; }
+}
+
+.post-author-link {
+  text-decoration: none;
+  font-weight: 500;
+  &:hover { text-decoration: underline; }
+}
+
+.author-page {
+  .author-profile {
+    margin-bottom: 1.5rem;
+  }
+  .author-name { margin-bottom: 0.5rem; }
+  .author-bio { color: #555; margin-bottom: 0.75rem; }
+  .author-linkedin {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #a0a0a0;
+    text-decoration: none;
+    font-size: 0.85rem;
+    &:hover { color: #0077b5; }
+  }
+}
+
+.contributor-card {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #e8e8e8;
+  h2 { margin-bottom: 0.5rem; }
+  p { color: #555; }
+}
 
 .post-year {
   font-size: 1.4rem;

@@ -1,0 +1,16 @@
+nitin:
+  name: Nitin
+  bio: Writing at the intersection of ideas — systems, technology, and the patterns underneath.
+  about: |
+    I work in technology, mostly around systems that sit close to decision-making.
+    I keep noticing the same patterns showing up in different places — a technical problem that turns out to be behavioral, something small repeating under different names.
+    This is where I slow that down and try to understand what's actually going on underneath.
+  linkedin: https://www.linkedin.com/in/joshnitin/
+  accent: "#b85c38"
+
+prisha:
+  name: Prisha
+  bio: Add a short bio here.
+  about: |
+    Add a longer description here — what you write about, what you're curious about, what readers can expect.
+  accent: "#4a7c9e"
