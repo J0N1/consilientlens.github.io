@@ -9,24 +9,20 @@ layout: default
     {%- assign postsByYear = site.posts | group_by_exp: "post", "post.date | date: '%Y'" -%}
     {%- for year in postsByYear -%}
       <h2 class="post-year">{{ year.name }}</h2>
-
-      {%- assign postsByMonth = year.items | group_by_exp: "post", "post.date | date: '%B'" -%}
-      {%- for month in postsByMonth -%}
-        <h3 class="post-month">{{ month.name }}</h3>
-        <ul class="post-list">
-          {%- for post in month.items -%}
-          <li data-tags="{{ post.tags | join: ',' }}">
-            <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
-            {%- if post.author -%}
-              {%- assign author = site.data.authors[post.author] -%}
-              {%- if author -%}
-                <a href="{{ "/" | append: post.author | append: "/" | relative_url }}" class="post-author-label" style="color: {{ author.accent }}">{{ author.name }}</a>
-              {%- endif -%}
+      <ul class="post-list">
+        {%- for post in year.items -%}
+        <li data-tags="{{ post.tags | join: ',' }}">
+          <span class="post-meta">{{ post.date | date: "%b %-d" }}</span>
+          <a class="post-link" href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+          {%- if post.author -%}
+            {%- assign author = site.data.authors[post.author] -%}
+            {%- if author -%}
+              <a href="{{ "/" | append: post.author | append: "/" | relative_url }}" class="post-author-label" style="color: {{ author.accent }}">{{ author.name }}</a>
             {%- endif -%}
-          </li>
-          {%- endfor -%}
-        </ul>
-      {%- endfor -%}
+          {%- endif -%}
+        </li>
+        {%- endfor -%}
+      </ul>
     {%- endfor -%}
   {%- endif -%}
 </div>
