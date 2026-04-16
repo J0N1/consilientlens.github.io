@@ -33,3 +33,5 @@ categories: []
 tags: []
 ---
 ```
+
+Before publishing any new post, make sure it is properly attributed and that distinctive phrasing has been originality-checked.

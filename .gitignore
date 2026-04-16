@@ -4,3 +4,9 @@ _site/
 .jekyll-metadata
 Gemfile.lock
 vendor/
+AGENTS.md
+.local/
+docs/style-guides/
+_posts/*.notes.bak
+_posts/*.updated.html
+_posts/2025-11-06-whose-morality
