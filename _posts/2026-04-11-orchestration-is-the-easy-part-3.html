@@ -185,17 +185,17 @@ author: nitin
 
   <h2>Windows cp1252 broke the same script three times</h2>
 
-  <p>The first error arrived within minutes of the watcher script running. A Unicode character in an agent's output — an arrow, an emoji in a print statement — hit Windows' default <code>cp1252</code> encoding and the whole process crashed.</p>
+  <p>The first error arrived within minutes of the watcher script running. A Unicode character in an agent's output, whether an arrow or an emoji in a print statement, hit Windows' default <code>cp1252</code> encoding and the whole process crashed.</p>
 
   <div class="error-block">
-    <div class="error-label">Session 1 — first crash</div>
+    <div class="error-label">Session 1 &mdash; first crash</div>
 UnicodeEncodeError: 'charmap' codec can't encode character '\u2705'
 in position 341: character maps to &lt;undefined&gt;
   </div>
 
-  <p>The fix was straightforward: force UTF-8 at the top of the script. What was less straightforward was that the same error appeared again in a different file, then again in a third. Each fix was correct but local. The root cause — Windows defaulting to <code>cp1252</code> in terminal sessions, while the Anthropic API returns responses with Unicode throughout — was systemic. It took four separate incidents across three files before the permanent fix landed: UTF-8 reconfiguration at the top of every Python entry point, <code>encoding="utf-8"</code> on every <code>write_text</code> call, no exceptions.</p>
+  <p>The fix was straightforward: force UTF-8 at the top of the script. What was less straightforward was that the same error appeared again in a different file, then again in a third. Each fix was correct but local. The root cause was systemic: Windows defaulting to <code>cp1252</code> in terminal sessions while the Anthropic API returned Unicode throughout. It took four separate incidents across three files before the permanent fix landed: UTF-8 reconfiguration at the top of every Python entry point, <code>encoding="utf-8"</code> on every <code>write_text</code> call, no exceptions.</p>
 
-  <p>A <code>.bat</code> file was created to load the <code>.env</code> API key automatically before any Python invocation — another fix for another variant of the same underlying problem: terminal sessions on Windows do not carry environment state the way Unix shells do. Every time a new terminal opened, the key was gone. The bat file made it permanent.</p>
+  <p>A <code>.bat</code> file was created to load the <code>.env</code> API key automatically before any Python invocation, another fix for another variant of the same underlying problem: terminal sessions on Windows do not carry environment state the way Unix shells do. Every time a new terminal opened, the key was gone. The batch file made it permanent.</p>
 
   <div class="scene-break"><span class="scene-label">The invisible character</span></div>
 
@@ -204,12 +204,12 @@ in position 341: character maps to &lt;undefined&gt;
   <p>Session 2. The relevant line was at the bottom of a long traceback:</p>
 
   <div class="error-block">
-    <div class="error-label">Session 2 — httpx traceback, final line</div>
+    <div class="error-label">Session 2 &mdash; httpx traceback, final line</div>
 httpcore.LocalProtocolError: Illegal header value
 b'sk-ant-api03-...ZJQAA '
   </div>
 
-  <p>The space at the end of the key — one invisible character appended when the key was copied into the <code>.env</code> file — was enough to make every API call fail with a protocol error buried four levels deep in the httpx transport layer. The error message gave no indication of what was wrong. The traceback pointed at the HTTP library, not at the configuration file. Finding it required reading the raw header value and noticing the trailing whitespace.</p>
+  <p>The space at the end of the key, one invisible character appended when the key was copied into the <code>.env</code> file, was enough to make every API call fail with a protocol error buried four levels deep in the httpx transport layer. The error message gave no indication of what was wrong. The traceback pointed at the HTTP library, not at the configuration file. Finding it required reading the raw header value and noticing the trailing whitespace.</p>
 
   <p>Open <code>.env</code>, delete the space, save. Thirty seconds. The error pointed everywhere except at the actual problem.</p>
 
@@ -217,7 +217,7 @@ b'sk-ant-api03-...ZJQAA '
 
   <h2>Confident, fast, and four major versions behind</h2>
 
-  <p>When asked to scaffold the MVP, Claude Code chose Angular 17. Not because of any constraint or deliberate reasoning — it was simply the version current in its training data. It wrote 28 files confidently, ran a syntax check, confirmed everything was clean, and delivered a scaffold a full four major versions behind the current release.</p>
+  <p>When asked to scaffold the MVP, Claude Code chose Angular 17. Not because of any constraint or deliberate reasoning, but because it was the version current in its training data. It wrote 28 files confidently, ran a syntax check, confirmed everything was clean, and delivered a scaffold several major versions behind the current release.</p>
 
   <p>The session that followed is worth quoting directly:</p>
 
@@ -226,33 +226,33 @@ b'sk-ant-api03-...ZJQAA '
     <cite>&mdash; Claude Code, when asked</cite>
   </blockquote>
 
-  <p>By that point the latest version was actually 21.2.x. Claude Code acknowledged this when told, looked it up, and updated the package versions. The scaffold it had written was compatible — the standalone component API had not changed significantly — but the exchange illustrated something worth naming: Claude Code is fast, thorough, and confident. It is also operating from a training cutoff. Any dependency, framework version, or API that moved after that cutoff will be handled incorrectly until you catch it.</p>
+  <p>At the time of the session, the latest version was 21.2.x. Claude Code acknowledged this when told, looked it up, and updated the package versions. The scaffold it had written was compatible, because the standalone component API had not changed significantly, but the exchange illustrated something worth naming: Claude Code is fast, thorough, and confident. It is also operating from a training cutoff. Any dependency, framework version, or API that moved after that cutoff will be handled incorrectly until you catch it.</p>
 
   <div class="scene-break"><span class="scene-label">The cost question</span></div>
 
   <h2>Ollama free, Gemini untested, Claude in production</h2>
 
-  <p>Calling a production AI API on every photo upload during development is expensive. Not catastrophically so, but enough that you hesitate before every test run — which is the wrong state of mind when you are trying to iterate quickly on an evaluation prompt.</p>
+  <p>Calling a production AI API on every photo upload during development is expensive. Not catastrophically so, but enough that you hesitate before every test run, which is the wrong state of mind when you are trying to iterate quickly on an evaluation prompt.</p>
 
-  <p>The solution was Ollama: an open-source tool that runs language models locally. During development, the backend pointed at a local Ollama instance. The API calls were free, the latency was manageable, and the prompt iteration loop was frictionless. The switch to a real API — Claude or Gemini — happened only when the prompt was stable enough to warrant it.</p>
+  <p>The solution was Ollama: an open-source tool that runs language models locally. During development, the backend pointed at a local Ollama instance. The API calls were free, the latency was manageable, and the prompt iteration loop was frictionless. The switch to a real API, Claude or Gemini, happened only when the prompt was stable enough to warrant it.</p>
 
   <p>The switching layer is a single environment variable:</p>
 
-  <pre>AI_PROVIDER=ollama   # local dev — free, fast iteration
-AI_PROVIDER=gemini   # testing — evaluating response quality
-AI_PROVIDER=claude   # production — best results, higher cost</pre>
+  <pre>AI_PROVIDER=ollama   # local dev - free, fast iteration
+AI_PROVIDER=gemini   # testing - evaluating response quality
+AI_PROVIDER=claude   # production - best results, higher cost</pre>
 
-  <p>The Gemini evaluation did not go smoothly. In one session, <code>gemini-2.0-flash</code> was deprecated mid-testing. The replacement <code>gemini-2.5-flash-preview-04-17</code> returned a 404. The session ended on <code>gemini-2.5-flash</code> after a web search confirmed it was the current stable model — something Claude Code's training data could not have known.</p>
+  <p>The Gemini evaluation did not go smoothly. One model was deprecated mid-test; the next preview model returned a 404. The specific names mattered less than the pattern: model catalogs move faster than training data. Anything time-sensitive still needed a human check.</p>
 
-  <p>The model comparison is still running. The question is not which model is more capable in the abstract but which one gives feedback that a beginner finds useful and accurate — a question that only real student submissions can answer. Claude and Gemini are both in the running. Ollama handles the development loop regardless of which one wins.</p>
+  <p>The comparison is still running. The real question is not which model is strongest in the abstract, but which one gives a beginner feedback that is useful and accurate. Ollama kept that evaluation loop cheap while the answer stayed unsettled.</p>
 
   <div class="scene-break"><span class="scene-label">The gap between planning and code</span></div>
 
   <h2>Agents read documents. They do not read your codebase.</h2>
 
-  <p>The app had been called Squint for weeks. The context documents said Squint. The agent system prompts said Squint. The curriculum said Squint. Late in the build sessions, a search of the source files turned up BrushCoach throughout — in component titles, in service class names, in comments, in the master system prompt passed to the vision API.</p>
+  <p>The app had been called Squint for weeks. The context documents said Squint. The agent system prompts said Squint. The curriculum said Squint. Late in the build sessions, a search of the source files turned up BrushCoach throughout, in component titles, in service class names, in comments, and in the master system prompt passed to the vision API.</p>
 
-  <p>One command found them all. Another replaced them. Four files updated, done in seconds. But the episode illustrated something the agent design had not accounted for: agents read documents. They do not read source files. The gap between what the planning layer knows and what the codebase contains is real, and it grows silently every time a decision is made in a chat that is not immediately reflected in the code.</p>
+  <p>One command found them all. Another replaced them. Four files updated, done in seconds. But the episode illustrated something the agent design had not accounted for: agents read documents. They do not read source files. The gap between what the planning layer knows and what the codebase contains is real, and it grows every time a decision is made in chat and not immediately reflected in the code.</p>
 
   <div class="scene-break"><span class="scene-label">The frustration</span></div>
 
@@ -265,11 +265,9 @@ AI_PROVIDER=claude   # production — best results, higher cost</pre>
     <cite>&mdash; Session 1, after the fourth incident</cite>
   </blockquote>
 
-  <p>This is the honest version of building with AI assistants. The architecture sessions in the browser had been clean — a question asked, an answer given, a decision made. The build sessions were different. Each error was fixable. None of them were interesting. They were the friction of moving from a designed system to a running one, and that friction does not disappear because an AI is helping you.</p>
+  <p>This is the honest version of building with AI assistants. The architecture sessions in the browser had been clean: a question asked, an answer given, a decision made. The build sessions were not. The errors were fixable, but they were mostly uninteresting friction: encoding, environment state, naming drift, deployment setup. AI did not remove that friction. It shortened the time spent inside it.</p>
 
-  <p>What Claude Code did well: it found the root cause of the encoding problem correctly, proposed the bat file approach without being asked, caught the missing import in the watcher script before the next run, and updated every affected file rather than just the one currently breaking. What it could not do: notice that fixing one file left three others still broken. That required a human to see the pattern.</p>
-
-  <p>The sessions took roughly two evenings to produce a running local build. Without Claude Code, the same work would likely have taken four or five. The time saving is real. The experience of those two evenings is not a clean pipeline — it is debugging, retrying, asking why again, and occasionally sending a message you would not send to a colleague but feel fine sending to a terminal.</p>
+  <p>Claude Code was useful when the problem was local: find the root cause, patch the files, catch the missing import, update the affected call sites. It was weaker at noticing patterns across sessions or auditing what already existed outside the current thread. The local build took roughly two evenings instead of four or five. That is real leverage. It is not a clean pipeline.</p>
 
   <div class="scene-break"><span class="scene-label">Context drift</span></div>
 
@@ -316,8 +314,10 @@ AI_PROVIDER=claude   # production — best results, higher cost</pre>
 
   <p>The design work in Parts 1 and 2 did not ship anything. The sessions did. Slower and messier than the architecture implies, faster and more capable than building alone. That is where AI-assisted development is right now: not a clean pipeline, not a replacement for knowing what you are doing, but a real compression of the distance between a decision and a running build.</p>
 
+  <p><em>Previous: <a href="{% post_url 2026-04-11-orchestration-is-the-easy-part-2 %}">Part 2</a> &nbsp;|&nbsp; Continue with <a href="{% post_url 2026-04-11-orchestration-is-the-easy-part-4 %}">Part 4</a>.</em></p>
+
 </article>
 
 <div class="footnote">
-  <p>Claude Code session history exported from VS Code: eight sessions across nine days, April 3–11 2026. Stack: Angular 21 PWA &mdash; FastAPI backend &mdash; Ollama (local) / Claude Sonnet / Gemini 2.5 Flash (evaluation) &mdash; Vercel (frontend) &mdash; Railway (backend). The agent system, curriculum, and all session exports are in the project repository.</p>
+  <p>Claude Code session history exported from VS Code: eight sessions across nine days, April 3&ndash;11, 2026. Stack: Angular 21 PWA &mdash; FastAPI backend &mdash; Ollama (local) / Claude Sonnet / Gemini 2.5 Flash (evaluation) &mdash; Vercel (frontend) &mdash; Railway (backend). The agent system, curriculum, and all session exports are in the project repository.</p>
 </div>

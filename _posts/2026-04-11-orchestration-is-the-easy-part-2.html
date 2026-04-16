@@ -501,7 +501,7 @@ tags: [product design, AI teams, curriculum design, agent architecture]
 
 
 
-  <p class="deck">What we put in them, when we turned them on, what we never let them decide</p>
+  <p class="deck">Three active agents, one watcher script, and a longer list of decisions they were not allowed to make</p>
 
   <p class="byline">A builder's journal &mdash; Part 2</p>
 
@@ -511,15 +511,17 @@ tags: [product design, AI teams, curriculum design, agent architecture]
 
 
 
-  <h2>Which agents, not how many</h2>
+  <h2>Which decisions deserved their own owner</h2>
 
 
 
-  <p>CrewAI, LangGraph, AutoGen &mdash; these solve orchestration: how to get agents passing information reliably. That is a real problem and they solve it well. What they do not address is the design layer underneath: which agents should exist, what should each one own, and what should each one explicitly refuse to decide.</p>
+  <p>Part 1 ended with a curriculum too large for one prompt. That created the real design problem of the project: not how many agents to orchestrate, but which decisions deserved their own owner.</p>
 
 
 
-  <p>Three agents activated for the build phase, each a Markdown file in <code>/agents/</code> with a role, a philosophy, a defined scope, and a list of things it defers:</p>
+  <p>CrewAI, LangGraph, AutoGen &mdash; those solve orchestration: how to move information between agents reliably. Useful problem. Not the first one. The first one was preventing curriculum design, product design, and technical tradeoffs from collapsing into one generic assistant.</p>
+
+  <p>So only three agents activated for the build phase, each a Markdown file in <code>/agents/</code> with a role, a philosophy, a defined scope, and a list of things it defers:</p>
 
 
 
@@ -559,7 +561,7 @@ tags: [product design, AI teams, curriculum design, agent architecture]
 
 
 
-  <p>Two Python scripts handle coordination. <code>squint.py</code> invokes a single agent, loads its context files, calls the API, and saves output to <code>/outputs/</code>. <code>collaborate.py</code> runs pipelines where each agent's output feeds the next automatically. A new lesson flows like this:</p>
+  <p>Two Python scripts handle coordination. <code>squint.py</code> invokes a single agent, loads its context files, calls the API, and saves output to <code>/outputs/</code>. <code>collaborate.py</code> runs pipelines where each agent's output feeds the next automatically. The point was not to create a swarm. It was to create clean handoffs. A new lesson flows like this:</p>
 
 
 
@@ -585,9 +587,9 @@ tags: [product design, AI teams, curriculum design, agent architecture]
 
   <div class="callout">
 
-    <p class="callout-label">How memory works across sessions</p>
+    <p class="callout-label">How Memory Worked Across Sessions</p>
 
-    <p>Context files are the memory. Every agent loads a curated set of project documents before responding. The curriculum, the team brief, the decision log travel between sessions and tools. The agents are stateless. The documents are the state.</p>
+    <p>Context files were the memory. Every agent loaded a curated set of project documents before responding. The curriculum, the team brief, and the decision log moved between sessions and tools. The agents were stateless. The documents were the state.</p>
 
   </div>
 
@@ -597,11 +599,11 @@ tags: [product design, AI teams, curriculum design, agent architecture]
 
 
 
-  <p>If Mira designs a lesson, Celeste reviews its evaluation criteria, and Kai specifies its screen, why can't a fourth agent named Dev build the Angular component? The answer is tool access. The messages API gives text in, text out. Writing files and running commands requires the tool use API, which takes real implementation work. Claude Code already had it, so we used that instead.</p>
+  <p>The missing role mattered more than any additional reviewer. If Mira designs a lesson, Celeste reviews its evaluation criteria, and Kai specifies its screen, why can't a fourth agent named Dev build the Angular component? Because the messages API gives text in, text out. Writing files and running commands requires tool access. Claude Code already had it, so we used that instead.</p>
 
 
 
-  <p>The cost was architectural inconsistency: all active agents in one system, the coding agent operating outside it. The right solution &mdash; a Dev agent with tool access, completing the pipeline from design to deployed code &mdash; does not exist yet. It is the clearest gap in the architecture.</p>
+  <p>The result was architectural inconsistency: the planning agents lived in one system, while the coding agent lived outside it. The missing Dev agent became the clearest gap in the architecture because it sat exactly where the handoff from design to running software should have been.</p>
 
 
 
@@ -609,7 +611,7 @@ tags: [product design, AI teams, curriculum design, agent architecture]
 
 
 
-  <p>Not all agents run from day one. Elena, the legal agent, activates only before scaling payments across jurisdictions &mdash; not at the start, when there are no users to protect. Felix, the strategy agent, waits for Riya's retention data before making pricing decisions. Activating agents before their domain is relevant produces confident-sounding advice with no grounding. The schedule is a product management decision applied to the team design.</p>
+  <p>Not all agents run from day one. Elena, the legal agent, does not need to wake up before there are users to protect. Felix, the strategy agent, does not need to opine before Riya has retention data. Activation is a product decision, not a completionist exercise. Turning on an agent before its domain matters mostly produces confident-sounding advice with no grounding.</p>
 
 
 
@@ -669,105 +671,21 @@ tags: [product design, AI teams, curriculum design, agent architecture]
 
 
 
-  <h2>The rest of the team</h2>
+  <h2>The rest of the team can wait</h2>
 
 
 
-  <p>The design accounts for roles the product does not need yet. Each has a system prompt and context files, ready to activate when the product reaches the phase their domain governs:</p>
+  <p>The design accounted for more roles than the product needed immediately. Celeste for auditing whether feedback on real student work is actually correct. Riya for funnels and retention. Jordan for support signal. Felix for pricing once behavior exists. Elena for legal and disclosure before scale. They were defined early so they could be activated later, not because they all deserved airtime on day one.</p>
 
 
 
-  <div class="agent-grid">
-
-    <div class="agent-card future">
-
-      <div class="agent-name">Celeste</div>
-
-      <div class="agent-role">Art Evaluation &mdash; Phase 1</div>
-
-      <div class="agent-owns">Activates when real students submit real work. Audits whether AI feedback is actually correct.</div>
-
-    </div>
-
-    <div class="agent-card future">
-
-      <div class="agent-name">Riya</div>
-
-      <div class="agent-role">Analytics &mdash; Phase 1</div>
-
-      <div class="agent-owns">Activates when behavioral data exists: funnels, retention, learning effectiveness.</div>
-
-    </div>
-
-    <div class="agent-card future">
-
-      <div class="agent-name">Jordan</div>
-
-      <div class="agent-role">Community &mdash; Phase 1</div>
-
-      <div class="agent-owns">Activates when users need support. Carries qualitative signal that data alone cannot.</div>
-
-    </div>
-
-    <div class="agent-card future">
-
-      <div class="agent-name">Sam</div>
-
-      <div class="agent-role">Project Manager &mdash; Phase 1</div>
-
-      <div class="agent-owns">Activates when agents need coordinating. Owns the decision log and dependency map.</div>
-
-    </div>
-
-    <div class="agent-card future">
-
-      <div class="agent-name">Felix</div>
-
-      <div class="agent-role">Product Strategy &mdash; Phase 2</div>
-
-      <div class="agent-owns">Activates when retention data exists. Makes the pricing call on evidence, not intuition.</div>
-
-    </div>
-
-    <div class="agent-card future">
-
-      <div class="agent-name">Marco</div>
-
-      <div class="agent-role">Marketing &mdash; Phase 2</div>
-
-      <div class="agent-owns">Activates when the product is proven: App Store, community outreach, creator partnerships.</div>
-
-    </div>
-
-    <div class="agent-card future">
-
-      <div class="agent-name">Quinn</div>
-
-      <div class="agent-role">Content &mdash; Phase 2</div>
-
-      <div class="agent-owns">Activates when content gaps need original production or creator licensing.</div>
-
-    </div>
-
-    <div class="agent-card future">
-
-      <div class="agent-name">Elena</div>
-
-      <div class="agent-role">Legal &mdash; Phase 3</div>
-
-      <div class="agent-owns">Activates before scaling across jurisdictions: GDPR, COPPA, AI disclosure.</div>
-
-    </div>
-
-  </div>
+  <p>The measure of the whole system is still simpler than the org chart: does a complete beginner draw a better sphere after one round of feedback than before? Build the loop first. Prove it on one person. Then earn the right to the rest of the team.</p>
 
 
 
-  <p>The measure of the whole system is whether a complete beginner draws a better sphere after one round of feedback than before. Build the loop first. Prove it on one person. Then build the rest.</p>
+  <p>Part Three covers what building actually looked like: the Claude Code sessions, the Ollama layer that kept iteration cheap, and the deployment work that finally got the app off a laptop and onto a phone. The architecture reads cleanly. The sessions did not.</p>
 
-
-
-  <p>Part Three covers what building actually looked like: the Claude Code sessions, the Ollama local development layer that kept costs at zero during iteration, and the Vercel and Railway deployment that got it off a laptop and onto a phone. The architecture looks clean described this way. The sessions tell a different story.</p>
+  <p><em>Previous: <a href="{% post_url 2026-04-11-a-feedback-gap-dressed-as-a-talent-gap %}">Part 1</a> &nbsp;|&nbsp; Continue with <a href="{% post_url 2026-04-11-orchestration-is-the-easy-part-3 %}">Part 3</a>.</em></p>
 
 
 

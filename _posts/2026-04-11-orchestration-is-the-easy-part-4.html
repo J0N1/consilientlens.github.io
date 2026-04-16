@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Getting It Off the Laptop"
+title: "Getting It Off Localhost"
 date: 2026-04-11
 categories: [AI, Deployment]
 series: "Orchestration Is the Easy Part"
@@ -170,7 +170,7 @@ author: nitin
 
 <article>
 
-  <p class="deck">Railway, Vercel, and what deployment actually cost</p>
+  <p class="deck">Railway, Vercel, and the small mistakes that made deployment take longer than architecture</p>
   <p class="byline">A builder&rsquo;s journal &mdash; Part 4</p>
 
   <div class="scene-break"><span class="scene-label">First test</span></div>
@@ -215,7 +215,7 @@ git push --force origin main</pre>
 Deploys have been paused temporarily :(
   </div>
 
-  <p>Railway had restricted their free tier that week. No warning, no timeline. The workaround was Render, which works but sleeps after inactivity &mdash; bad for an API that needs to respond in under five seconds. The right fix was a Railway credit card, which unlocks the Hobby plan at $5 a month with $5 of free credits. First month free. Should have been the starting assumption.</p>
+  <p>Railway had restricted the free tier that week. No warning, no timeline. Render worked as a fallback, but sleeping after inactivity was a poor fit for an API that needed to answer within a few seconds. The durable fix was to stop treating free infrastructure as a plan and pay for the backend that matched the workload.</p>
 
   <p>Infrastructure availability is an external dependency. It does not care about your launch timeline.</p>
 
@@ -262,32 +262,34 @@ INFO: Uvicorn running on http://0.0.0.0:8000
 {"status":"ok","message":"Squint API running"}
   </div>
 
-  <p>Not a particularly dramatic moment when it happened. It was eleven o&rsquo;clock at night. The next step was updating the Angular environment file to point at the Railway URL, pushing to GitHub, waiting for Vercel to build, and opening the URL on the phone.</p>
+  <p>It was not a particularly dramatic moment. It was eleven o&rsquo;clock at night. The next step was updating the Angular environment file to point at the Railway URL, pushing to GitHub, waiting for Vercel to build, and opening the URL on the phone.</p>
 
-  <p>It worked.</p>
+  <p>It worked on the phone. That was the moment the project stopped being a local experiment.</p>
 
   <div class="scene-break"><span class="scene-label">What deployment actually cost</span></div>
 
   <h2>The decisions that matter are made before the first push</h2>
 
-  <p>The infrastructure choices &mdash; Vercel for static frontend, Railway for persistent backend &mdash; were right. A Claude Vision API call takes two to four seconds. Serverless functions with cold starts and short timeouts would have failed unpredictably. A persistent server is more infrastructure to reason about and the right shape for this workload.</p>
+  <p>The infrastructure choices were right. A Claude Vision API call takes two to four seconds. Serverless functions with cold starts and short timeouts would have failed unpredictably. A persistent backend and a static frontend were the right shape for the workload.</p>
 
-  <p>What the deployment sessions actually cost was not the infrastructure choices. It was the things that should have been done before the first <code>git add</code>: a gitignore that named the actual folder, a <code>vercel.json</code> that handled the SPA routing, a <code>PORT</code> variable in the Railway dashboard from the start, and the assumption that a free tier might not be free when you need it.</p>
+  <p>The hidden cost was all the setup work that should have existed before the first <code>git add</code>: a gitignore that matched the actual folder, a <code>vercel.json</code> for SPA routing, a port configuration that matched the host, and the assumption that a free tier might disappear when needed.</p>
 
-  <p>None of these are hard. All of them are the kind of thing you know to do on the second project.</p>
+  <p>None of these are hard. All of them are the kind of thing you learn on the second project and pay for on the first.</p>
 
   <div class="scene-break"><span class="scene-label">The series</span></div>
 
   <h2>What four posts actually described</h2>
 
-  <p>Part 1: a feedback problem that became a product. Part 2: an agent team designed rather than assembled. Part 3: what building with AI assistants looks like from inside a session. Part 4: what getting a local build in front of five real users actually costs.</p>
+  <p>These four posts describe a feedback problem that became a product, an agent team designed instead of improvised, the mess of building with AI assistants, and the work of making the thing reachable by real users.</p>
 
-  <p>The architecture is real. The curriculum is real. The app is running at a Railway URL. A beginner can draw a sphere, photograph it, upload it, and get feedback that tells them specifically what is wrong and what to try next. That is the thing the whole system exists to produce.</p>
+  <p>The result is concrete: a beginner can draw a sphere, photograph it, upload it, and get feedback that tells them what is wrong and what to try next.</p>
 
-  <p>The agent team &mdash; Mira, Kai, Noa, and the eight still waiting &mdash; the scripts, the context files, the activation schedule: none of it shipped the app. The sessions did. The agents made the sessions less confused about what to build. That is the honest scope of what they contributed.</p>
+  <p>The app shipped because the sessions turned decisions into files, fixes, and deploys. The agents helped by making those sessions less confused about what to build. That is the real scope of what they contributed.</p>
+
+  <p><em>Previous: <a href="{% post_url 2026-04-11-orchestration-is-the-easy-part-3 %}">Part 3</a> &nbsp;|&nbsp; Start the series at <a href="{% post_url 2026-04-11-a-feedback-gap-dressed-as-a-talent-gap %}">Part 1</a>.</em></p>
 
 </article>
 
 <div class="footnote">
-  <p>Stack: Angular 21 PWA &mdash; FastAPI (Python) &mdash; Ollama / Gemini 2.5 Flash / Claude Sonnet (evaluation, still running) &mdash; Vercel (frontend) &mdash; Railway (backend). Repository: <a href="https://github.com/J0N1/squint">github.com/J0N1/squint</a>.</p>
+  <p>Stack: Angular 21 PWA &mdash; FastAPI (Python) &mdash; Ollama / Gemini 2.5 Flash / Claude Sonnet (evaluation, still running) &mdash; Vercel (frontend) &mdash; Railway (backend). Repository currently private while the project is still evolving.</p>
 </div>
