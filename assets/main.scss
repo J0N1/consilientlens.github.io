@@ -306,11 +306,8 @@ $base-font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Rob
 
 .post-content img {
   display: block;
-  width: 100%;
-  max-width: 760px;
-  height: 400px;
-  object-fit: cover;
-  object-position: center;
+  max-width: 100%;
+  height: auto;
   margin: 1.5rem auto;
   border-radius: 4px;
 }
